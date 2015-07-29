@@ -2,12 +2,16 @@
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="java.net.URI" %>
 <%@ page import="xdi2.core.syntax.CloudNumber" %>
+<%@ page import="xdi2.core.syntax.CloudName" %>
 <% 
 	String xdiMessageEnvelope = (String) request.getAttribute("xdiMessageEnvelope");
 	if (xdiMessageEnvelope == null) xdiMessageEnvelope = "";
 
 	String discoveryKey = (String) request.getAttribute("discoveryKey");
 	if (discoveryKey == null) discoveryKey = "";
+
+	String otherDiscoveryKey = (String) request.getAttribute("otherDiscoveryKey");
+	if (otherDiscoveryKey == null) otherDiscoveryKey = "";
 
 	URI registryEndpointUri = (URI) request.getAttribute("registryEndpointUri");
 
@@ -16,9 +20,6 @@
 
 	CloudNumber cloudNumber = (CloudNumber) request.getAttribute("cloudNumber");
 	URI xdiEndpointUri = (URI) request.getAttribute("xdiEndpointUri");
-	
-	String otherCloudName = (String) request.getAttribute("otherCloudName");
-
 %> 
 <!DOCTYPE html>
 <html lang="en">
@@ -78,10 +79,10 @@
                         <img src="images/explain-xdi-cloud.png">&nbsp;
                         <img src="images/explain-xdi-data-out.png">&nbsp;
                         <img src="images/explain-xdi-cloud.png">&nbsp;
-                    	<b>+acmenews</b>
+                    	<b><%= otherDiscoveryKey %></b>
                         </p>
-                        <p>+acmenews is sending you a Connection Request for: <b>Your cloud number</b>.</p>
-                        <p>+acmenews is requesting data from you: <b>Your cloud number</b>.</p>
+                        <p><%= otherDiscoveryKey %> is sending you a Connection Request for: <b>Your cloud number</b>.</p>
+                        <p><%= otherDiscoveryKey %> is requesting data from you: <b>Your cloud number</b>.</p>
                     </div>
                 </div>
                 </center>
@@ -98,9 +99,28 @@
                         <img src="images/explain-xdi-cloud.png">&nbsp;
                         <img src="images/explain-xdi-data-out.png">&nbsp;
                         <img src="images/explain-xdi-cloud.png">&nbsp;
-                    	<b>+acmepizza</b>
+                    	<b><%= otherDiscoveryKey %></b>
                         </p>
-                        <p>+acmepizza is sending you a Connection Request for: <b>Your e-mail address</b>.</p>
+                        <p><%= otherDiscoveryKey %> is sending you a Connection Request for: <b>Your e-mail address</b>.</p>
+                    </div>
+                </div>
+                </center>
+                <div class="spacer20"></div>
+
+				<% } else if (xdiMessageEnvelope.contains("leshop")) { %>
+
+                <div class="spacer20"></div>
+                <center>
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                    	<p>
+                    	<b><%= discoveryKey %></b>&nbsp;
+                        <img src="images/explain-xdi-cloud.png">&nbsp;
+                        <img src="images/explain-xdi-data-out.png">&nbsp;
+                        <img src="images/explain-xdi-cloud.png">&nbsp;
+                    	<b><%= otherDiscoveryKey %></b>
+                        </p>
+                        <p><%= otherDiscoveryKey %> is sending you a Connection Request for: <b>Your name and address</b>.</p>
                     </div>
                 </div>
                 </center>
@@ -117,9 +137,9 @@
                         <img src="images/explain-xdi-cloud.png">&nbsp;
                         <img src="images/explain-xdi-data-in.png">&nbsp;
                         <img src="images/explain-xdi-cloud.png">&nbsp;
-                    	<b><%= otherCloudName %></b>
+                    	<b><%= otherDiscoveryKey %></b>
                         </p>
-                        <p>Someone is sending you a Connection Invitation for: <b>One of their cloud cards</b>.</p>
+                        <p><%= otherDiscoveryKey %> is sending you a Connection Invitation for: <b>One of their cloud cards</b>.</p>
                     </div>
                 </div>
                 </center>
@@ -131,15 +151,20 @@
                 <center>
                 <div class="row">
                     <div class="col-md-10 col-md-offset-1">
-                        <p>Unknown request</p>
+                    	<p>
+                    	<b><%= discoveryKey %></b>&nbsp;
+                        <img src="images/explain-xdi-cloud.png">&nbsp;
+                        <img src="images/explain-xdi-data-in.png">&nbsp;
+                        <img src="images/explain-xdi-cloud.png">&nbsp;
+                    	<b><%= otherDiscoveryKey %></b>
+                        </p>
+                        <p><%= otherDiscoveryKey %> is sending you an <b>unknown</b> request.</p>
                     </div>
                 </div>
                 </center>
                 <div class="spacer20"></div>
 
 				<% } %>
-
-
 
 				<form method="post" action="/authapprove">
                     <input type="hidden" name="discoveryKey" value="<%= StringEscapeUtils.escapeHtml(discoveryKey) %>">

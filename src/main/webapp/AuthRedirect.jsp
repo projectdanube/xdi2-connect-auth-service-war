@@ -11,10 +11,12 @@
 
 	URI registryEndpointUri = (URI) request.getAttribute("registryEndpointUri");
 	
-	String xdiMessageResult = (String) request.getAttribute("xdiMessageResult");
-	if (xdiMessageResult == null) xdiMessageResult = "";
+	String xdiMessagingResponse = (String) request.getAttribute("xdiMessagingResponse");
+	if (xdiMessagingResponse == null) xdiMessagingResponse = "";
 	
 	URI returnUri = (URI) request.getAttribute("returnUri");
+
+	String method = (URI) request.getAttribute("method");
 	
 	String returnText = "";
 	if (returnUri.toString().contains("cloud-cards"))
@@ -23,7 +25,9 @@
 		returnText = "+acmenews Website";
 	else if (returnUri.toString().contains("acmepizza"))
 		returnText = "+acmepizza Website";
-	
+	else if (returnUri.toString().contains("leshop"))
+		returnText = "+leshop Website";
+
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,9 +75,9 @@
 
                 <div class="spacer20"></div>
 
-                <form action="<%= returnUri %>" method="post">
+                <form action="<%= returnUri %>" method="<%= method %>">
 
-                    <input type="hidden" name="xdiMessageResult" value="<%= StringEscapeUtils.escapeHtml(xdiMessageResult) %>">
+                    <input type="hidden" name="xdiMessagingResponse" value="<%= StringEscapeUtils.escapeHtml(xdiMessagingResponse) %>">
                     <input type="hidden" name="registryEndpointUri" value="<%= StringEscapeUtils.escapeHtml(registryEndpointUri.toString()) %>">
 
                     <p><strong>This authorization process is completed, you can return to <%= returnText %></strong>
@@ -122,7 +126,7 @@
 
                 <p class="small">The XDI message envelope:</p>
 
-                <textarea class="xdi" rows="5"><%= StringEscapeUtils.escapeHtml(xdiMessageResult) %></textarea>
+                <textarea class="xdi" rows="5"><%= StringEscapeUtils.escapeHtml(xdiMessagingResponse) %></textarea>
                 <div class="spacer10"></div>
 
                 <pre><b>Return URI:</b> <%= returnUri %></pre>
